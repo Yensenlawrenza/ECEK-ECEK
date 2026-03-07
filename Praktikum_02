@@ -1,0 +1,401 @@
+Microsoft Windows [Version 10.0.26100.7840]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\HP>sqlplus
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Sat Mar 7 22:38:21 2026
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Sat Mar 07 2026 21:56:41 +07:00
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> SPOOL C:\Users\mutge\pertemuan2.sql
+SP2-0606: Cannot create SPOOL file "C:\Users\mutge\pertemuan2.sql"
+SQL> --nama : Yensen Simangunsong
+SQL> --nim  : 103122430054
+SQL> CREATE TABLE film (
+  2  id_film NUMBER PRIMARY KEY,
+  3  judul VARCHAR2(100),
+  4  sinopsis VARCHAR2(300),
+  5  tahun NUMBER,
+  6  durasi NUMBER
+  7  );
+
+Table created.
+
+SQL> DESC film;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_FILM                                   NOT NULL NUMBER
+ JUDUL                                              VARCHAR2(100)
+ SINOPSIS                                           VARCHAR2(300)
+ TAHUN                                              NUMBER
+ DURASI                                             NUMBER
+
+SQL> CREATE TABLE theater (
+  2  id_theater NUMBER PRIMARY KEY,
+  3  harga NUMBER,
+  4  kapasitas NUMBER,
+  5  kelas VARCHAR2(20)
+  6  );
+
+Table created.
+
+SQL> DESC theater;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_THEATER                                NOT NULL NUMBER
+ HARGA                                              NUMBER
+ KAPASITAS                                          NUMBER
+ KELAS                                              VARCHAR2(20)
+
+SQL> CREATE TABLE member (
+  2  id_member NUMBER PRIMARY KEY,
+  3  nama VARCHAR2(50),
+  4  no_hp VARCHAR2(15),
+  5  tgl_lahir DATE,
+  6  email VARCHAR2(50)
+  7  );
+
+Table created.
+
+SQL> DESC member;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_MEMBER                                 NOT NULL NUMBER
+ NAMA                                               VARCHAR2(50)
+ NO_HP                                              VARCHAR2(15)
+ TGL_LAHIR                                          DATE
+ EMAIL                                              VARCHAR2(50)
+
+SQL> CREATE TABLE jadwal (
+  2  id_jadwal NUMBER PRIMARY KEY,
+  3  periode_start DATE,
+  4  periode_end DATE,
+  5  id_film NUMBER,
+  6
+SQL>
+SQL> CREATE TABLE jadwal (
+  2  id_jadwal NUMBER PRIMARY KEY,
+  3  periode_start DATE,
+  4  periode_end DATE,
+  5  id_film NUMBER,
+  6  id_theater NUMBER,
+  7  FOREIGN KEY (id_film) REFERENCES film(id_film),
+  8  FOREIGN KEY (id_theater) REFERENCES theater(id_theater)
+  9  );
+
+Table created.
+
+SQL> DESC jadwal;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_JADWAL                                 NOT NULL NUMBER
+ PERIODE_START                                      DATE
+ PERIODE_END                                        DATE
+ ID_FILM                                            NUMBER
+ ID_THEATER                                         NUMBER
+
+SQL> CREATE TABLE inventaris (
+  2  id_inventaris NUMBER PRIMARY KEY,
+  3  nomor_kursi VARCHAR2(10),
+  4  id_theater NUMBER,
+  5  FOREIGN KEY (id_theater) REFERENCES theater(id_theater)
+  6  );
+
+Table created.
+
+SQL> DESC inventaris;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_INVENTARIS                             NOT NULL NUMBER
+ NOMOR_KURSI                                        VARCHAR2(10)
+ ID_THEATER                                         NUMBER
+
+SQL> CREATE TABLE transaksi (
+  2  kode_pemesanan NUMBER PRIMARY KEY,
+  3  status VARCHAR2(20),
+  4  tanggal DATE,
+  5  total_harga NUMBER,
+  6  id_jadwal NUMBER,
+  7  id_member NUMBER,
+  8  FOREIGN KEY (id_jadwal) REFERENCES jadwal(id_jadwal),
+  9  FOREIGN KEY (id_member) REFERENCES member(id_member)
+ 10  );
+
+Table created.
+
+SQL> DESC transaksi;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ KODE_PEMESANAN                            NOT NULL NUMBER
+ STATUS                                             VARCHAR2(20)
+ TANGGAL                                            DATE
+ TOTAL_HARGA                                        NUMBER
+ ID_JADWAL                                          NUMBER
+ ID_MEMBER                                          NUMBER
+
+SQL> INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);
+
+1 row created.
+
+SQL> INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);INSERT INTO film VALUES (2,'Gravity','Film tentang luar angkasa',2013,120);INSERT INTO film VALUES (3,'Tenet','Film manipulasi waktu',2020,150);INSERT INTO theater VALUES (1,55000,100,'Regular');INSERT INTO theater VALUES (2,80000,80,'VIP');INSERT INTO member VALUES (1,'Yensen','081345672198',TO_DATE('2000-03-12','YYYY-MM-DD'),'yensen.simangunsong@gmail.com');INSERT INTO member VALUES (2,'Cia','082134567812',TO_DATE('2001-07-25','YYYY-MM-DD'),'ciaa25@gmail.com');INSERT INTO member VALUES (3,'Naia','085267891234',TO_DATE('2002-11-08','YYYY-MM-DD'),'naia.dev08@gmail.com');INSERT INTO jadwal VALUES (1,TO_DATE('2025-06-01','YYYY-MM-DD'),TO_DATE('2025-06-10','YYYY-MM-DD'),1,1);INSERT INTO jadwal VALUES (2,TO_DATE('2025-06-05','YYYY-MM-DD'),TO_DATE('2025-06-15','YYYY-MM-DD'),2,2);INSERT INTO inventaris VALUES (1,'A01',1);INSERT INTO inventaris VALUES (2,'A02',1);INSERT INTO inventaris VALUES (3,'A03',1);INSERT INTO inventaris VALUES (4,'B01',2);INSERT INTO inventaris VALUES (5,'B02',2);INSERT INTO transaksi VALUES (101,'Lunas',TO_DATE('2025-06-01','YYYY-MM-DD'),55000,1,1);INSERT INTO transaksi VALUES (102,'Pending',TO_DATE('2025-06-02','YYYY-MM-DD'),80000,2,2);INSERT INTO transaksi VALUES (103,'Lunas',TO_DATE('2025-06-03','YYYY-MM-DD'),55000,1,3);INSERT INTO transaksi VALUES (104,'Pending',TO_DATE('2025-06-04','YYYY-MM-DD'),80000,2,1);INSERT INTO transaksi VALUES (105,'Lunas',TO_DATE('2025-06-05','YYYY-MM-DD'),55000,1,2);COMMIT;
+INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);INSERT INTO film VALUES (2,'Gravity','Film tentang luar angkasa',2013,120);INSERT INTO film VALUES (3,'Tenet','Film manipulasi waktu',2020,150);INSERT INTO theater VALUES (1,55000,100,'Regular');INSERT INTO theater VALUES (2,80000,80,'VIP');INSERT INTO member VALUES (1,'Yensen','081345672198',TO_DATE('2000-03-12','YYYY-MM-DD'),'yensen.simangunsong@gmail.com');INSERT INTO member VALUES (2,'Cia','082134567812',TO_DATE('2001-07-25','YYYY-MM-DD'),'ciaa25@gmail.com');INSERT INTO member VALUES (3,'Naia','085267891234',TO_DATE('2002-11-08','YYYY-MM-DD'),'naia.dev08@gmail.com');INSERT INTO jadwal VALUES (1,TO_DATE('2025-06-01','YYYY-MM-DD'),TO_DATE('2025-06-10','YYYY-MM-DD'),1,1);INSERT INTO jadwal VALUES (2,TO_DATE('2025-06-05','YYYY-MM-DD'),TO_DATE('2025-06-15','YYYY-MM-DD'),2,2);INSERT INTO inventaris VALUES (1,'A01',1);INSERT INTO inventaris VALUES (2,'A02',1);INSERT INTO inventaris VALUES (3,'A03',1);INSERT INTO inventaris VALUES (4,'B01',2);INSERT INTO inventaris VALUES (5,'B02',2);INSERT INTO transaksi VALUES (101,'Lunas',TO_DATE('2025-06-01','YYYY-MM-DD'),55000,1,1);INSERT INTO transaksi VALUES (102,'Pending',TO_DATE('2025-06-02','YYYY-MM-DD'),80000,2,2);INSERT INTO transaksi VALUES (103,'Lunas',TO_DATE('2025-06-03','YYYY-MM-DD'),55000,1,3);INSERT INTO transaksi VALUES (104,'Pending',TO_DATE('2025-06-04','YYYY-MM-DD'),80000,2,1);INSERT INTO transaksi VALUES (105,'Lunas',TO_DATE('2025-06-05','YYYY-MM-DD'),55000,1,2);COMMIT
+                                                                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);
+INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008314) violated
+
+
+SQL> --INSERT DATA
+SQL> INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);
+INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008314) violated
+
+
+SQL> INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130);
+INSERT INTO film VALUES (1,'Doctor Strange','Film superhero Marvel',2016,130)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008314) violated
+
+
+SQL> INSERT INTO film VALUES (2,'Gravity','Film tentang luar angkasa',2013,120);
+
+1 row created.
+
+SQL> INSERT INTO film VALUES (3,'Tenet','Film manipulasi waktu',2020,150);
+
+1 row created.
+
+SQL> INSERT INTO theater VALUES (1,55000,100,'Regular');
+
+1 row created.
+
+SQL> INSERT INTO theater VALUES (2,80000,80,'VIP');
+
+1 row created.
+
+SQL> INSERT INTO member VALUES (1,'Yensen','081345672198',TO_DATE('2000-03-12','YYYY-MM-DD'),'yensen.simangunsong@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO member VALUES (2,'Cia','082134567812',TO_DATE('2001-07-25','YYYY-MM-DD'),'ciaa25@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO member VALUES (3,'Naia','085267891234',TO_DATE('2002-11-08','YYYY-MM-DD'),'naia.dev08@gmail.com');
+
+1 row created.
+
+SQL> INSERT INTO jadwal VALUES (1,TO_DATE('2025-06-01','YYYY-MM-DD'),TO_DATE('2025-06-10','YYYY-MM-DD'),1,1);
+
+1 row created.
+
+SQL> INSERT INTO jadwal VALUES (2,TO_DATE('2025-06-05','YYYY-MM-DD'),TO_DATE('2025-06-15','YYYY-MM-DD'),2,2);
+
+1 row created.
+
+SQL> INSERT INTO inventaris VALUES (1,'A01',1);
+
+1 row created.
+
+SQL> INSERT INTO inventaris VALUES (2,'A02',1);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO inventaris VALUES (3,'A03',1);
+
+1 row created.
+
+SQL> INSERT INTO inventaris VALUES (4,'B01',2);
+
+1 row created.
+
+SQL> INSERT INTO inventaris VALUES (5,'B02',2);
+
+1 row created.
+
+SQL> INSERT INTO transaksi VALUES (101,'Lunas',TO_DATE('2025-06-01','YYYY-MM-DD'),55000,1,1);
+
+1 row created.
+
+SQL> INSERT INTO transaksi VALUES (102,'Pending',TO_DATE('2025-06-02','YYYY-MM-DD'),80000,2,2);
+
+1 row created.
+
+SQL> INSERT INTO transaksi VALUES (103,'Lunas',TO_DATE('2025-06-03','YYYY-MM-DD'),55000,1,3);
+
+1 row created.
+
+SQL> INSERT INTO transaksi VALUES (104,'Pending',TO_DATE('2025-06-04','YYYY-MM-DD'),80000,2,1);
+
+1 row created.
+
+SQL> INSERT INTO transaksi VALUES (105,'Lunas',TO_DATE('2025-06-05','YYYY-MM-DD'),55000,1,2);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM film;
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         1
+Doctor Strange
+Film superhero Marvel
+      2016        130
+
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         2
+Gravity
+Film tentang luar angkasa
+      2013        120
+
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         3
+Tenet
+Film manipulasi waktu
+      2020        150
+
+
+SQL> SELECT * FROM theater;
+
+ID_THEATER      HARGA  KAPASITAS KELAS
+---------- ---------- ---------- --------------------
+         1      55000        100 Regular
+         2      80000         80 VIP
+
+SQL> SELECT * FROM member;
+
+ ID_MEMBER NAMA                                               NO_HP
+---------- -------------------------------------------------- ---------------
+TGL_LAHIR EMAIL
+--------- --------------------------------------------------
+         1 Yensen                                             081345672198
+12-MAR-00 yensen.simangunsong@gmail.com
+
+         2 Cia                                                082134567812
+25-JUL-01 ciaa25@gmail.com
+
+         3 Naia                                               085267891234
+08-NOV-02 naia.dev08@gmail.com
+
+
+SQL> SELECT * FROM jadwal;
+
+ ID_JADWAL PERIODE_S PERIODE_E    ID_FILM ID_THEATER
+---------- --------- --------- ---------- ----------
+         1 01-JUN-25 10-JUN-25          1          1
+         2 05-JUN-25 15-JUN-25          2          2
+
+SQL> SELECT * FROM inventaris;
+
+ID_INVENTARIS NOMOR_KURS ID_THEATER
+------------- ---------- ----------
+            1 A01                 1
+            2 A02                 1
+            3 A03                 1
+            4 B01                 2
+            5 B02                 2
+
+SQL> SELECT * FROM transaksi;
+
+KODE_PEMESANAN STATUS               TANGGAL   TOTAL_HARGA  ID_JADWAL  ID_MEMBER
+-------------- -------------------- --------- ----------- ---------- ----------
+           101 Lunas                01-JUN-25       55000          1          1
+           102 Pending              02-JUN-25       80000          2          2
+           103 Lunas                03-JUN-25       55000          1          3
+           104 Pending              04-JUN-25       80000          2          1
+           105 Lunas                05-JUN-25       55000          1          2
+
+SQL> UPDATE transaksi SET status='Lunas' WHERE kode_pemesanan=102;
+
+1 row updated.
+
+SQL> UPDATE transaksi SET status='Cancel' WHERE kode_pemesanan=104;
+
+1 row updated.
+
+SQL> UPDATE transaksi SET total_harga=90000 WHERE kode_pemesanan=101;
+
+1 row updated.
+
+SQL> UPDATE transaksi SET total_harga=60000 WHERE kode_pemesanan=105;
+
+1 row updated.
+
+SQL> UPDATE transaksi SET tanggal=TO_DATE('2025-06-06','YYYY-MM-DD');
+
+5 rows updated.
+
+SQL> SELECT * FROM transaksi;
+
+KODE_PEMESANAN STATUS               TANGGAL   TOTAL_HARGA  ID_JADWAL  ID_MEMBER
+-------------- -------------------- --------- ----------- ---------- ----------
+           101 Lunas                06-JUN-25       90000          1          1
+           102 Lunas                06-JUN-25       80000          2          2
+           103 Lunas                06-JUN-25       55000          1          3
+           104 Cancel               06-JUN-25       80000          2          1
+           105 Lunas                06-JUN-25       60000          1          2
+
+SQL> DELETE FROM transaksi WHERE status='Cancel';
+
+1 row deleted.
+
+SQL> DELETE FROM transaksi WHERE total_harga=55000;
+
+1 row deleted.
+
+SQL> SELECT * FROM transaksi;
+
+KODE_PEMESANAN STATUS               TANGGAL   TOTAL_HARGA  ID_JADWAL  ID_MEMBER
+-------------- -------------------- --------- ----------- ---------- ----------
+           101 Lunas                06-JUN-25       90000          1          1
+           102 Lunas                06-JUN-25       80000          2          2
+           105 Lunas                06-JUN-25       60000          1          2
+
+SQL> SPOOL OFF
+not spooling currently
+SQL>

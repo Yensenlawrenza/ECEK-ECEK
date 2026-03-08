@@ -1,0 +1,450 @@
+SQL> --nama: Yensen simangunsong
+SQL> --nim : 103122430054
+SQL> CREATE TABLE Film (
+  2  id_film NUMBER PRIMARY KEY,
+  3  judul VARCHAR2(100),
+  4  sinopsis VARCHAR2(300),
+  5  tahun NUMBER,
+  6  durasi NUMBER
+  7  );
+CREATE TABLE Film (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Film;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_FILM                                   NOT NULL NUMBER
+ JUDUL                                              VARCHAR2(100)
+ SINOPSIS                                           VARCHAR2(300)
+ TAHUN                                              NUMBER
+ DURASI                                             NUMBER
+
+SQL> CREATE TABLE Theater (
+  2  id_theater NUMBER PRIMARY KEY,
+  3  harga NUMBER,
+  4  kapasitas NUMBER,
+  5  kelas VARCHAR2(20)
+  6  );
+CREATE TABLE Theater (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Theater;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_THEATER                                NOT NULL NUMBER
+ HARGA                                              NUMBER
+ KAPASITAS                                          NUMBER
+ KELAS                                              VARCHAR2(20)
+
+SQL> CREATE TABLE Member (
+  2  id_member NUMBER PRIMARY KEY,
+  3  nama VARCHAR2(50),
+  4  no_hp VARCHAR2(15),
+  5  tgl_lahir DATE,
+  6  email VARCHAR2(50)
+  7  );
+CREATE TABLE Member (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Member;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_MEMBER                                 NOT NULL NUMBER
+ NAMA                                               VARCHAR2(50)
+ NO_HP                                              VARCHAR2(15)
+ TGL_LAHIR                                          DATE
+ EMAIL                                              VARCHAR2(50)
+
+SQL> CREATE TABLE Jadwal (
+  2  id_jadwal NUMBER PRIMARY KEY,
+  3  id_film NUMBER REFERENCES Film(id_film),
+  4  id_theater NUMBER REFERENCES Theater(id_theater),
+  5  periode_start DATE,
+  6  periode_end DATE
+  7  );
+CREATE TABLE Jadwal (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Jadwal;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_JADWAL                                 NOT NULL NUMBER
+ ID_FILM                                            NUMBER
+ ID_THEATER                                         NUMBER
+ PERIODE_START                                      DATE
+ PERIODE_END                                        DATE
+
+SQL> CREATE TABLE Inventaris (
+  2  id_inventaris NUMBER PRIMARY KEY,
+  3  id_theater NUMBER REFERENCES Theater(id_theater),
+  4  nomor_kursi VARCHAR2(10)
+  5  );
+CREATE TABLE Inventaris (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Inventaris;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID_INVENTARIS                             NOT NULL NUMBER
+ ID_THEATER                                         NUMBER
+ NOMOR_KURSI                                        VARCHAR2(10)
+
+SQL> CREATE TABLE Transaksi (
+  2  kode_pemesanan NUMBER PRIMARY KEY,
+  3  id_jadwal NUMBER REFERENCES Jadwal(id_jadwal),
+  4  id_member NUMBER REFERENCES Member(id_member),
+  5  status VARCHAR2(20),
+  6  tanggal DATE,
+  7  total_harga NUMBER
+  8  );
+CREATE TABLE Transaksi (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> DESC Transaksi;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ KODE_PEMESANAN                            NOT NULL NUMBER
+ ID_JADWAL                                          NUMBER
+ ID_MEMBER                                          NUMBER
+ STATUS                                             VARCHAR2(20)
+ TANGGAL                                            DATE
+ TOTAL_HARGA                                        NUMBER
+
+SQL> INSERT INTO Film VALUES (1, 'Mencuri Raden Saleh 2', 'Aksi komplotan Piko di luar negeri', 2026, 150);
+INSERT INTO Film VALUES (1, 'Mencuri Raden Saleh 2', 'Aksi komplotan Piko di luar negeri', 2026, 150)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008345) violated
+
+
+SQL> INSERT INTO Film VALUES (2, 'Siksa Kubur 2', 'Horor religi yang mencekam', 2026, 120);
+INSERT INTO Film VALUES (2, 'Siksa Kubur 2', 'Horor religi yang mencekam', 2026, 120)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008345) violated
+
+
+SQL> INSERT INTO Film VALUES (3, 'KKN 2: Pusaka Hutan', 'Teror desa penari berlanjut', 2026, 130);
+
+1 row created.
+
+SQL> INSERT INTO Theater VALUES (1, 50000, 100, 'Reguler');
+INSERT INTO Theater VALUES (1, 50000, 100, 'Reguler')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008346) violated
+
+
+SQL> INSERT INTO Theater VALUES (2, 95000, 50, 'Premiere');
+INSERT INTO Theater VALUES (2, 95000, 50, 'Premiere')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008346) violated
+
+
+SQL> INSERT INTO Member VALUES (1, 'Yensen', '082246012812', TO_DATE('2004-01-11','YYYY-MM-DD'), 'yensen@mail.com');
+INSERT INTO Member VALUES (1, 'Yensen', '082246012812', TO_DATE('2004-01-11','YYYY-MM-DD'), 'yensen@mail.com')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008347) violated
+
+
+SQL> INSERT INTO Member VALUES (2, 'Martin', '08532728', TO_DATE('2005-02-01','YYYY-MM-DD'), 'martin@mail.com');
+INSERT INTO Member VALUES (2, 'Martin', '08532728', TO_DATE('2005-02-01','YYYY-MM-DD'), 'martin@mail.com')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008347) violated
+
+
+SQL> INSERT INTO Member VALUES (3, 'Cia', '08928264', TO_DATE('2026-11-14','YYYY-MM-DD'), 'cia@email.com');
+INSERT INTO Member VALUES (3, 'Cia', '08928264', TO_DATE('2026-11-14','YYYY-MM-DD'), 'cia@email.com')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008347) violated
+
+
+SQL> INSERT INTO Jadwal VALUES (1, 1, 1, TO_DATE('2026-03-01','YYYY-MM-DD'), TO_DATE('2026-03-15','YYYY-MM-DD'));
+INSERT INTO Jadwal VALUES (1, 1, 1, TO_DATE('2026-03-01','YYYY-MM-DD'), TO_DATE('2026-03-15','YYYY-MM-DD'))
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008348) violated
+
+
+SQL> INSERT INTO Jadwal VALUES (2, 2, 2, TO_DATE('2026-03-05','YYYY-MM-DD'), TO_DATE('2026-03-20','YYYY-MM-DD'));
+INSERT INTO Jadwal VALUES (2, 2, 2, TO_DATE('2026-03-05','YYYY-MM-DD'), TO_DATE('2026-03-20','YYYY-MM-DD'))
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008348) violated
+
+
+SQL> INSERT INTO Inventaris VALUES (1, 1, 'A-01');
+INSERT INTO Inventaris VALUES (1, 1, 'A-01')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008351) violated
+
+
+SQL> INSERT INTO Inventaris VALUES (2, 2, 'V-05');
+INSERT INTO Inventaris VALUES (2, 2, 'V-05')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008351) violated
+
+
+SQL> INSERT INTO Inventaris VALUES (3, 1, 'A-02');
+INSERT INTO Inventaris VALUES (3, 1, 'A-02')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008351) violated
+
+
+SQL> INSERT INTO Transaksi VALUES (1001, 1, 1, 'Lunas', TO_DATE('2026-03-01','YYYY-MM-DD'), 50000);
+INSERT INTO Transaksi VALUES (1001, 1, 1, 'Lunas', TO_DATE('2026-03-01','YYYY-MM-DD'), 50000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008353) violated
+
+
+SQL> INSERT INTO Transaksi VALUES (1002, 2, 2, 'Pending', TO_DATE('2026-03-02','YYYY-MM-DD'), 95000);
+INSERT INTO Transaksi VALUES (1002, 2, 2, 'Pending', TO_DATE('2026-03-02','YYYY-MM-DD'), 95000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008353) violated
+
+
+SQL> INSERT INTO Transaksi VALUES (1003, 1, 3, 'Lunas', TO_DATE('2026-03-03','YYYY-MM-DD'), 50000);
+INSERT INTO Transaksi VALUES (1003, 1, 3, 'Lunas', TO_DATE('2026-03-03','YYYY-MM-DD'), 50000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C008353) violated
+
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM Film;
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         1
+Mencuri Raden Saleh 2
+Aksi komplotan Piko di luar negeri
+      2026        150
+
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         2
+Siksa Kubur 2
+Horor religi yang mencekam
+      2026        120
+
+
+   ID_FILM
+----------
+JUDUL
+--------------------------------------------------------------------------------
+SINOPSIS
+--------------------------------------------------------------------------------
+     TAHUN     DURASI
+---------- ----------
+         3
+KKN 2: Pusaka Hutan
+Teror desa penari berlanjut
+      2026        130
+
+
+SQL> SELECT * FROM Transaksi;
+
+KODE_PEMESANAN  ID_JADWAL  ID_MEMBER STATUS               TANGGAL   TOTAL_HARGA
+-------------- ---------- ---------- -------------------- --------- -----------
+          1001          1          1 Lunas                01-MAR-26       50000
+          1002          2          2 Pending              02-MAR-26       95000
+          1003          1          3 Lunas                03-MAR-26       50000
+
+SQL> UPDATE Transaksi SET status = 'Berhasil' WHERE kode_pemesanan = 1002;
+
+1 row updated.
+
+SQL> UPDATE Theater SET harga = 48000 WHERE id_theater = 1;
+
+1 row updated.
+
+SQL> UPDATE Member SET no_hp = '0811998877' WHERE id_member = 1;
+
+1 row updated.
+
+SQL> UPDATE Film SET durasi = 155 WHERE id_film = 1;
+
+1 row updated.
+
+SQL> UPDATE Theater SET kelas = 'Gold Class' WHERE id_theater = 2;
+
+1 row updated.
+
+SQL> DELETE FROM Transaksi WHERE kode_pemesanan = 1003;
+
+1 row deleted.
+
+SQL> DELETE FROM Inventaris WHERE id_inventaris = 3;
+
+1 row deleted.
+
+SQL> SELECT * FROM Transaksi;
+
+KODE_PEMESANAN  ID_JADWAL  ID_MEMBER STATUS               TANGGAL   TOTAL_HARGA
+-------------- ---------- ---------- -------------------- --------- -----------
+          1001          1          1 Lunas                01-MAR-26       50000
+          1002          2          2 Berhasil             02-MAR-26       95000
+
+SQL> SELECT * FROM Inventaris;
+
+ID_INVENTARIS ID_THEATER NOMOR_KURS
+------------- ---------- ----------
+            1          1 A-01
+            2          2 V-05
+
+SQL> SPOOL OFF
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
